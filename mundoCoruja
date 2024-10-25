@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mondoCoruja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        select, button {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .question-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+   <p>Alunos do 1° ao 3° ano do Ensino Médio</p>
+    </header>
+
+    <main>
+        <div class="question-box">
+            <h2>Escolha uma categoria:</h2>
+            <select id="category">
+                <option value="">--Selecione uma categoria--</option>
+                <option value="matematica">Matemática</option>
+                <option value="ciencias">Ciências</option>
+                <option value="historia">História</option>
+                <option value="portugues">Português</option>
+            </select>
+            <div id="question-section" style="display: none;">
+                <p id="question-text"></p>
+                <button onclick="checkAnswer('a')">A) <span id="option-a"></span></button><br>
+                <button onclick="checkAnswer('b')">B) <span id="option-b"></span></button><br>
+                <button onclick="checkAnswer('c')">C) <span id="option-c"></span></button><br>
+                <button onclick="checkAnswer('d')">D) <span id="option-d"></span></button><br>
+            </div>
+            <div id="result" class="result"></div>
+        </div>
+    </main>
+
+    <script>
+        const questions = {
+            matematica: [
+                {
+                    question: "Qual é o valor de 2 + 2?",
+                    options: {
+                        a: "3",
+                        b: "4",
+                        c: "5",
+                        d: "6"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Qual é a raiz quadrada de 16?",
+                    options: {
+                        a: "2",
+                        b: "4",
+                        c: "6",
+                        d: "8"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Quanto é 9 vezes 3?",
+                    options: {
+                        a: "27",
+                        b: "26",
+                        c: "30",
+                        d: "29"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "Qual é o valor de 5^2?",
+                    options: {
+                        a: "10",
+                        b: "20",
+                        c: "25",
+                        d: "30"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "Quanto é 100 dividido por 4?",
+                    options: {
+                        a: "20",
+                        b: "25",
+                        c: "30",
+                        d: "35"
+                    },
+                    correctAnswer: "b"
+                }
+            ],
+            ciencias: [
+                {
+                    question: "Qual planeta é conhecido como Planeta Vermelho?",
+                    options: {
+                        a: "Marte",
+                        b: "Júpiter",
+                        c: "Saturno",
+                        d: "Vênus"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "Qual é o gás mais abundante na atmosfera terrestre?",
+                    options: {
+                        a: "Oxigênio",
+                        b: "Nitrogênio",
+                        c: "Hidrogênio",
+                        d: "Dióxido de carbono"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Qual é o órgão do corpo humano responsável por bombear o sangue?",
+                    options: {
+                        a: "Cérebro",
+                        b: "Fígado",
+                        c: "Pulmão",
+                        d: "Coração"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "O que é a fotossíntese?",
+                    options: {
+                        a: "Processo de respiração das plantas",
+                        b: "Transformação de energia solar em química",
+                        c: "A absorção de água pelas raízes",
+                        d: "A produção de frutos pelas plantas"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Qual é a camada mais externa da Terra?",
+                    options: {
+                        a: "Manto",
+                        b: "Núcleo",
+                        c: "Crosta",
+                        d: "Astenosfera"
+                    },
+                    correctAnswer: "c"
+                }
+            ],
+            historia: [
+                {
+                    question: "Quem foi o primeiro presidente do Brasil?",
+                    options: {
+                        a: "Getúlio Vargas",
+                        b: "Juscelino Kubitschek",
+                        c: "Deodoro da Fonseca",
+                        d: "Pedro Álvares Cabral"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "Em que ano aconteceu a Proclamação da República no Brasil?",
+                    options: {
+                        a: "1822",
+                        b: "1889",
+                        c: "1964",
+                        d: "1500"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Quem foi o responsável por descobrir o Brasil?",
+                    options: {
+                        a: "Cristóvão Colombo",
+                        b: "Pedro Álvares Cabral",
+                        c: "Vasco da Gama",
+                        d: "Dom Pedro I"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Qual foi a principal causa da Segunda Guerra Mundial?",
+                    options: {
+                        a: "A Revolução Industrial",
+                        b: "A Grande Depressão",
+                        c: "A ascensão do Nazismo",
+                        d: "A Guerra Civil Espanhola"
+                    },
+                    correctAnswer: "c"
+                },
+                {
+                    question: "Em que ano caiu o Muro de Berlim?",
+                    options: {
+                        a: "1985",
+                        b: "1989",
+                        c: "1991",
+                        d: "1995"
+                    },
+                    correctAnswer: "b"
+                }
+            ],
+            portugues: [
+                {
+                    question: "Qual é a forma correta de conjugação do verbo no futuro do presente do indicativo: 'Eu ____ amanhã'?",
+                    options: {
+                        a: "irei",
+                        b: "iria",
+                        c: "vou",
+                        d: "ire"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "Qual a palavra correta: 'Atenção!' ou 'Atensão!'?",
+                    options: {
+                        a: "Atenção!",
+                        b: "Atensão!",
+                        c: "Atenssão!",
+                        d: "Atençãon!"
+                    },
+                    correctAnswer: "a"
+                },
+                {
+                    question: "Qual é o plural de 'cão'?",
+                    options: {
+                        a: "cões",
+                        b: "caes",
+                        c: "cãos",
+                        d: "cães"
+                    },
+                    correctAnswer: "d"
+                },
+                {
+                    question: "O que significa a palavra 'perene'?",
+                    options: {
+                        a: "Temporário",
+                        b: "Eterno",
+                        c: "Passageiro",
+                        d: "Raro"
+                    },
+                    correctAnswer: "b"
+                },
+                {
+                    question: "Qual é o antônimo de 'bem'?",
+                    options: {
+                        a: "Mal",
+                        b: "Bom",
+                        c: "Ruim",
+                        d: "Mau"
+                    },
+                    correctAnswer: "a"
+                }
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let currentCategory = "";
+
+        const categorySelect = document.getElementById('category');
+        const questionSection = document.getElementById('question-section');
+        const questionText = document.getElementById('question-text');
+        const optionA = document.getElementById('option-a');
+        const optionB = document.getElementById('option-b');
+        const optionC = document.getElementById('option-c');
+        const optionD = document.getElementById('option-d');
+        const result = document.getElementById('result');
+
+        categorySelect.addEventListener('change', function() {
+            currentCategory = categorySelect.value;
+            if (currentCategory) {
+                currentQuestionIndex = 0;
+                loadQuestion();
+                questionSection.style.display = 'block';
+                result.textContent = '';
+            } else {
+                questionSection.style.display = 'none';
+            }
+        });
+
+        function loadQuestion() {
+            const question = questions[currentCategory][currentQuestionIndex];
+            questionText.textContent = question.question;
+            optionA.textContent = question.options.a;
+            optionB.textContent = question.options.b;
+            optionC.textContent = question.options.c;
+            optionD.textContent = question.options.d;
+            result.textContent = '';
+        }
+
+        function checkAnswer(selectedOption) {
+            const correctAnswer = questions[currentCategory][currentQuestionIndex].correctAnswer;
+            if (selectedOption === correctAnswer) {
+                result.textContent = "Correto! Parabéns!";
+                result.style.color = "green";
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions[currentCategory].length) {
+                    setTimeout(loadQuestion, 1000); // Carrega a próxima pergunta após 1 segundo
+                } else {
+                    result.textContent = "Você completou todas as perguntas dessa categoria!";
+                }
+            } else {
+                result.textContent = "Incorreto. Tente novamente.";
+                result.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
